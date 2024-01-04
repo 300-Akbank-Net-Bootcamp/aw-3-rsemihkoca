@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "HHECAXjWM5c7vGCdEIEk59qvomXY/CPNo+KBLlBTUHRRJHmcp7qpJZPZBO9IXIyMx4IS1OXqZEa+hzGnmAlywA==",
+  "success": true,
+  "projectFilePath": "/home/rsemihkoca/Projects/aw-3-rsemihkoca/VbApi/Vb.Schema/Vb.Schema.csproj",
+  "expectedPackageFiles": [
+    "/home/rsemihkoca/.nuget/packages/newtonsoft.json/13.0.1/newtonsoft.json.13.0.1.nupkg.sha512"
+  ],
+  "logs": []
+}
