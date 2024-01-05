@@ -13,7 +13,6 @@ public class CustomerCommandHandler :
     IRequestHandler<CreateCustomerCommand, ApiResponse<CustomerResponse>>,
     IRequestHandler<UpdateCustomerCommand,ApiResponse>,
     IRequestHandler<DeleteCustomerCommand,ApiResponse>
-
 {
     private readonly VbDbContext dbContext;
     private readonly IMapper mapper;
@@ -34,7 +33,14 @@ public class CustomerCommandHandler :
         }
         
         var entity = mapper.Map<CustomerRequest, Customer>(request.Model);
-        entity.CustomerNumber = new Random().Next(1000000, 9999999);
+        
+        int newCustomerNumber;
+        do
+        {
+            newCustomerNumber = new Random().Next(1000000, 9999999);
+        } while (await dbContext.Set<Customer>().AnyAsync(x => x.CustomerNumber == newCustomerNumber, cancellationToken));
+
+        entity.CustomerNumber = newCustomerNumber;
         
         var entityResult = await dbContext.AddAsync(entity, cancellationToken);
         await dbContext.SaveChangesAsync(cancellationToken);
