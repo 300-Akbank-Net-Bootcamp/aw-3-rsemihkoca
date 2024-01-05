@@ -32,6 +32,11 @@ public class MapperConfig : Profile
         CreateMap<AccountTransaction, AccountTransactionResponse>();
         
         CreateMap<EftTransactionRequest, EftTransaction>();
-        CreateMap<EftTransaction, EftTransactionResponse>();
+        // CreateMap<EftTransaction, EftTransactionResponse>();
+        
+        CreateMap<EftTransaction, EftTransactionResponse>()
+            .ForMember(dest => dest.AccountIBAN,
+                src => src.MapFrom(x => x.Account.IBAN.ToUpper()));
+
     }
 }
