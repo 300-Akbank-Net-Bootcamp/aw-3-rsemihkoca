@@ -34,6 +34,10 @@ public class Startup
         services.AddControllers().AddFluentValidation(x =>
         {
             x.RegisterValidatorsFromAssemblyContaining<CreateCustomerValidator>();
+            x.RegisterValidatorsFromAssemblyContaining<CreateAddressValidator>();
+            x.RegisterValidatorsFromAssemblyContaining<CreateAccountValidator>();
+            x.RegisterValidatorsFromAssemblyContaining<CreateContactValidator>();
+            
         });
         
         services.AddEndpointsApiExplorer();
