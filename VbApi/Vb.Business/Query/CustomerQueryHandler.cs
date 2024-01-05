@@ -63,7 +63,7 @@ public class CustomerQueryHandler :
             .Where(x =>
             x.FirstName.ToUpper().Contains(request.FirstName.ToUpper()) ||
             x.LastName.ToUpper().Contains(request.LastName.ToUpper()) ||
-            x.IdentityNumber.ToUpper().Contains(request.IdentiyNumber.ToUpper())
+            x.IdentityNumber.ToUpper().Contains(request.IdentityNumber.ToUpper())
         ).ToListAsync(cancellationToken);
         
         var mappedList = mapper.Map<List<Customer>, List<CustomerResponse>>(list);
