@@ -16,7 +16,7 @@ public class CustomersController : ControllerBase
         this.mediator = mediator;
     }
 
-    [HttpGet]
+    [HttpGet("All")]
     public async Task<ApiResponse<List<CustomerResponse>>> Get()
     {
         var operation = new GetAllCustomerQuery();
@@ -33,7 +33,7 @@ public class CustomersController : ControllerBase
     }
     
     [HttpGet]
-    public async Task<ApiResponse<List<CustomerResponse>>> Get([FromBody] string firstName,string lastName,string identityNumber)
+    public async Task<ApiResponse<List<CustomerResponse>>> Get(string firstName,string lastName,string identityNumber)
     {
         var operation = new GetCustomerByParameterQuery(firstName,lastName,identityNumber);
         var result = await mediator.Send(operation);
