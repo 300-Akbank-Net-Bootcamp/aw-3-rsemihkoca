@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  your-ms-sql-service:
+    image: mcr.microsoft.com/mssql/server
+    environment:
+      SA_PASSWORD: Lucy89-21Cgy
+      ACCEPT_EULA: Y
+    ports:
+      - "1433:1433"   
+    networks:
+      - your-network-name
+
+  your-postgres-service:
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Lucy89-21Cgy
+      POSTGRES_DB: akb
+    ports:
+      - "5432:5432"
+    networks:
+      - your-network-name
+
+networks:
+  your-network-name:
+    driver: bridge
