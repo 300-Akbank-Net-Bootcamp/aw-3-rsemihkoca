@@ -11,7 +11,9 @@ namespace Vb.Business.Query;
 
 public class AddressQueryHandler :
     IRequestHandler<GetAllAddressQuery, ApiResponse<List<AddressResponse>>>,
-    IRequestHandler<GetAddressByIdQuery, ApiResponse<AddressResponse>>
+    IRequestHandler<GetAddressByIdQuery, ApiResponse<AddressResponse>>,
+    IRequestHandler<GetAddressByParameterQuery, ApiResponse<List<AddressResponse>>>
+
 {
     private readonly VbDbContext dbContext;
     private readonly IMapper mapper;
@@ -27,15 +29,20 @@ public class AddressQueryHandler :
     {
         var list = await dbContext.Set<Address>()
             .Include(x => x.Customer).ToListAsync(cancellationToken);
-        
+
+        if (list.Count == 0)
+        {
+            return new ApiResponse<List<AddressResponse>>("Record not found");
+        }
+
         var mappedList = mapper.Map<List<Address>, List<AddressResponse>>(list);
-         return new ApiResponse<List<AddressResponse>>(mappedList);
+        return new ApiResponse<List<AddressResponse>>(mappedList);
     }
 
     public async Task<ApiResponse<AddressResponse>> Handle(GetAddressByIdQuery request,
         CancellationToken cancellationToken)
     {
-        var entity =  await dbContext.Set<Address>()
+        var entity = await dbContext.Set<Address>()
             .Include(x => x.Customer)
             .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
 
@@ -43,8 +50,28 @@ public class AddressQueryHandler :
         {
             return new ApiResponse<AddressResponse>("Record not found");
         }
-        
+
         var mapped = mapper.Map<Address, AddressResponse>(entity);
         return new ApiResponse<AddressResponse>(mapped);
+    }
+
+    public async Task<ApiResponse<List<AddressResponse>>> Handle(GetAddressByParameterQuery request,
+        CancellationToken cancellationToken)
+    {
+        var list = await dbContext.Set<Address>()
+            .Include(x => x.Customer)
+            .Where(x =>
+                x.City.ToUpper().Contains(request.City.ToUpper()) ||
+                x.Country.ToUpper().Contains(request.Country.ToUpper()) ||
+                x.PostalCode.ToUpper().Contains(request.PostalCode.ToUpper())
+            ).ToListAsync(cancellationToken);
+
+        if (list.Count == 0)
+        {
+            return new ApiResponse<List<AddressResponse>>("Record not found");
+        }
+
+        var mappedList = mapper.Map<List<Address>, List<AddressResponse>>(list);
+        return new ApiResponse<List<AddressResponse>>(mappedList);
     }
 }

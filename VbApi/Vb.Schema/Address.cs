@@ -15,7 +15,7 @@ public class AddressRequest : BaseRequest
     public string City { get; set; }
     public string County { get; set; }
     public string PostalCode { get; set; }
-    public bool IsDefault { get; set; }
+    public bool IsDefault { get; set; } = false;
 
 }
 
